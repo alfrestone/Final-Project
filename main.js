@@ -195,7 +195,7 @@ function ShowTickets() {
     while (i < tickets.length) {
         let j = 0;
         while (j < trips.length) {
-            if (trips[j].id == tickets[i].tripId) {
+            if (trips[j].id == tickets[i].tripId && tickets[i].isCancelled == false) {
                 console.log(`Ticket #${tickets[i].id}`);
                 console.log(`Passager : ${tickets[i].passengerName}`);
                 console.log(`Trajet : ${trips[j].departure} → ${trips[j].destination}`);
@@ -212,6 +212,38 @@ function ShowTickets() {
 
 // declaring prompt sync the global range
 var prompt = require('prompt-sync')();
+
+//Canceling Tickets
+
+function CancelTicket() {
+    let num = Number(prompt("Identifiant du ticket : "));
+    console.log("");
+    let indexOfticket = null;
+    let i = 0;
+    while (i < tickets.length) {
+        if (tickets[i].id == num && tickets[i].isCancelled === false) {
+            indexOfticket = i;
+            break;
+        }
+        i++;
+    }
+
+    if(indexOfticket === null) {
+        console.log("Ticket introuvable.");
+        return;
+    }
+
+    let j = 0;
+    while (j < trips.length) {
+        if (trips[j].id == tickets[indexOfticket].tripId) {
+            tickets[indexOfticket].isCancelled = true;
+            trips[j].availableSeats++;
+            console.log("Ticket annulé avec succès.");
+            break;
+        }
+        j++;
+    }
+}
 
 //Declaring BuyTicket Function
 function BuyTicket() {
