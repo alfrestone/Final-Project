@@ -184,6 +184,32 @@ const trips = [
 //Declaring ticket array
 const tickets = [];
 
+//Declaration of ShowTickets()
+function ShowTickets() {
+    if (tickets.length === 0) {
+        console.log("Aucun ticket enregistré");
+        return;
+    }
+    console.log("=== TICKETS ===")
+    let i = 0;
+    while (i < tickets.length) {
+        let j = 0;
+        while (j < trips.length) {
+            if (trips[j].id == tickets[i].tripId) {
+                console.log(`Ticket #${tickets[i].id}`);
+                console.log(`Passager : ${tickets[i].passengerName}`);
+                console.log(`Trajet : ${trips[j].departure} → ${trips[j].destination}`);
+                console.log(`Place : ${tickets[i].seatNumber}`);
+                console.log(`Prix : ${tickets[i].price} DH`);
+                console.log(``);
+                break;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
 // declaring prompt sync the global range
 var prompt = require('prompt-sync')();
 
