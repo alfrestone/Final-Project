@@ -1,5 +1,4 @@
 // Initial data of the software
-
 const trips = [
     {
         id: 1,
@@ -186,6 +185,32 @@ const trips = [
 // declaring prompt sync the global range
 var prompt = require('prompt-sync')();
 
+
+//Declaring ShowTrips Function
+function ShowTrips() {
+    let i = 0;
+    let isVal = false;
+    console.log("=== TRAJETS DISPONIBLES === ");
+    while (i < trips.length)
+    {
+        if (trips[i].availableSeats >= 1) {
+        console.log(`#${trips[i].id} ${trips[i].departure} → ${trips[i].destination}`);
+        console.log(`Départ : ${trips[i].departureTime}`);
+        console.log(`Arrivée : ${trips[i].arrivalTime}`);
+        console.log(`Prix : ${trips[i].price} DH`);
+        console.log(`Places disponibles : ${trips[i].availableSeats}`);
+        console.log(``);
+        isVal = true;
+        i++;
+        }
+        else {
+            i++;
+        }
+    }
+    if (isVal === false) {
+        console.log("Aucun trajet disponible avec des places libres !")
+    }
+}
 //Declaring Main Menu Function of the software
 function MainMenu() {
     do {
