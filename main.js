@@ -181,27 +181,102 @@ const trips = [
         availableSeats: 50
     }
 ];
+//Declaring ticket array
+const tickets = [];
 
 // declaring prompt sync the global range
 var prompt = require('prompt-sync')();
 
+//Declaring BuyTicket Function
+function BuyTicket() {
+    let hold_name = prompt("Nom du passager : ");
+    let name = hold_name.trim().toLowerCase();
+    let idoftrip = Number(prompt("Identifiant du trajet : "));
+    let isTruetrip = false;
+    let tripExists = false;
+    let i = 0;
+    while (i < name.length) {
+        if (!(name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122 || name.charCodeAt(i) === 32)) {
+            console.log("Erreur : Veuillez saisir un nom valide.");
+            return;
+        }
+        else {
+            i++;
+        }
+    }
+
+    let j = 0;
+    while (j < trips.length) {
+        if ((trips[j].id == idoftrip)) {
+            tripExists = true;
+            if (trips[j].availableSeats >= 1) {
+                isTruetrip = true;
+                break;
+            }
+        }
+        j++;
+    }
+
+    if (tripExists === false) {
+        console.log("Trajet introuvable.");
+        return;
+    }
+
+    if (isTruetrip === false) {
+        console.log("Train complet.");
+        return;
+    }
+    let newSeat = 1;
+    while (true) {
+        let seatTaken = false;
+        let k = 0;
+        while (k < tickets.length) {
+            if (tickets[k].tripId == idoftrip && tickets[k].isCancelled === false && tickets[k].seatNumber == newSeat) {
+                seatTaken = true;
+                break;
+            }
+            k++;
+        }
+        if (seatTaken === false) {
+            break;
+        }
+        newSeat++;
+    }
+
+    const newTicket = {
+        id: tickets.length + 1,
+        passengerName: hold_name,
+        tripId: trips[j].id,
+        seatNumber: newSeat,
+        price: trips[j].price,
+        isCancelled: false
+    };
+    tickets.push(newTicket);
+    trips[j].availableSeats--;
+    console.log("Ticket acheté avec succès.");
+    console.log(`Ticket # ${newTicket.id}`);
+    console.log(`Passager : ${newTicket.passengerName}`);
+    console.log(`Trajet : ${trips[j].departure} → ${trips[j].destination}`);
+    console.log(`Place : ${newTicket.seatNumber}`);
+    console.log(`Prix : ${newTicket.price}`);
+    console.log(``);
+}
 
 //Declaring ShowTrips Function
 function ShowTrips() {
     let i = 0;
     let isVal = false;
     console.log("=== TRAJETS DISPONIBLES === ");
-    while (i < trips.length)
-    {
+    while (i < trips.length) {
         if (trips[i].availableSeats >= 1) {
-        console.log(`#${trips[i].id} ${trips[i].departure} → ${trips[i].destination}`);
-        console.log(`Départ : ${trips[i].departureTime}`);
-        console.log(`Arrivée : ${trips[i].arrivalTime}`);
-        console.log(`Prix : ${trips[i].price} DH`);
-        console.log(`Places disponibles : ${trips[i].availableSeats}`);
-        console.log(``);
-        isVal = true;
-        i++;
+            console.log(`#${trips[i].id} ${trips[i].departure} → ${trips[i].destination}`);
+            console.log(`Départ : ${trips[i].departureTime}`);
+            console.log(`Arrivée : ${trips[i].arrivalTime}`);
+            console.log(`Prix : ${trips[i].price} DH`);
+            console.log(`Places disponibles : ${trips[i].availableSeats}`);
+            console.log(``);
+            isVal = true;
+            i++;
         }
         else {
             i++;
@@ -228,35 +303,36 @@ RAILWAY MANAGER
 0. Quitter 
 
             `)
-    var choice = Number(prompt("Votre choix : "));
-    switch (choice) {
-        case 0:
-            break;
-        case 1:
-            ShowTrips();
-            break;
-        case 2:
-            BuyTicket();
-            break;
-        case 3:
-            ShowTickets();
-            break;
-        case 4:
-            CancelTicket();
-            break;
-        case 5:
-            LookUpTicket();
-            break;
-        case 6:
-            FilterTrips();
-            break;
-        case 7:
-            SortTrips();
-            break;
-        default:
-            console.log("Option indisponible, veuillez choisir un numéro dans le menu.");
-            break;
-    }
+        var choice = Number(prompt("Votre choix : "));
+        console.log(``);
+        switch (choice) {
+            case 0:
+                break;
+            case 1:
+                ShowTrips();
+                break;
+            case 2:
+                BuyTicket();
+                break;
+            case 3:
+                ShowTickets();
+                break;
+            case 4:
+                CancelTicket();
+                break;
+            case 5:
+                LookUpTicket();
+                break;
+            case 6:
+                FilterTrips();
+                break;
+            case 7:
+                SortTrips();
+                break;
+            default:
+                console.log("Option indisponible, veuillez choisir un numéro dans le menu.");
+                break;
+        }
     } while (choice !== 0);
 }
 
