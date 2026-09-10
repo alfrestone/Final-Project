@@ -184,6 +184,29 @@ const trips = [
 //Declaring ticket array
 const tickets = [];
 
+//Declaration of FilterTrips
+function FilterTrips() {
+    city = prompt("Ville de départ : ").trim().toLowerCase();
+    console.log(``);
+    let isTherecity = false;
+    let i = 0;
+
+    console.log("Résultat");
+    while (i < trips.length) {
+        if (city == trips[i].departure.toLowerCase()) {
+            console.log(``);
+            console.log(`${trips[i].departure} → ${trips[i].destination} : ${trips[i].price} DH`);
+            isTherecity = true;
+        }
+        i++;
+    }
+    if (isTherecity === false) {
+        console.log(``)
+        console.log("Aucun trajet trouvé pour cette ville.")
+        return;
+    }
+}
+
 //Declaration of LookUpticket
 function LookUpTicket() {
     if (tickets.length === 0) {
