@@ -184,7 +184,46 @@ const trips = [
 //Declaring ticket array
 const tickets = [];
 
-//Declaration of ShowTickets()
+//Declaration of LookUpticket
+function LookUpTicket() {
+    if (tickets.length === 0) {
+        console.log("Aucun billet n'a été acheté.");
+        return;
+    }
+    let clientName = prompt("Nom du passager : ").trim().toLowerCase();
+    console.log(``);
+    let isThere = false;
+    let i = 0;
+    while (i < tickets.length) {
+        if (tickets[i].passengerName === clientName) {
+            let j = 0;
+            while (j < trips.length) {
+                if (trips[j].id == tickets[i].tripId) {
+                    console.log(``);
+                    console.log(`Ticket #${tickets[i].id}`);
+                    console.log(`Passager : ${tickets[i].passengerName}`);
+                    console.log(`Trajet : ${trips[j].departure} → ${trips[j].destination}`);
+                    console.log(`Place : ${tickets[i].seatNumber}`);
+                    console.log(`Prix : ${tickets[i].price} DH`);
+                    console.log(`Est-ce que c'est annulé ? : ${tickets[i].isCancelled ? 'Oui' : 'Non'}`);
+                    console.log(``);
+                    isThere = true;
+                    break;
+                }
+                j++;
+            }
+        }
+        i++;
+    }
+
+    if(isThere === false) {
+        console.log("Aucun ticket trouvé pour ce passager.");
+        return;
+    }
+}
+
+
+//Declaration of ShowTickets
 function ShowTickets() {
     if (tickets.length === 0) {
         console.log("Aucun ticket enregistré");
@@ -228,7 +267,7 @@ function CancelTicket() {
         i++;
     }
 
-    if(indexOfticket === null) {
+    if (indexOfticket === null) {
         console.log("Ticket introuvable.");
         return;
     }
@@ -249,10 +288,18 @@ function CancelTicket() {
 function BuyTicket() {
     let hold_name = prompt("Nom du passager : ");
     let name = hold_name.trim().toLowerCase();
-    let idoftrip = Number(prompt("Identifiant du trajet : "));
+    let idOfTtrip = Number(prompt("Identifiant du trajet : "));
     let isTruetrip = false;
     let tripExists = false;
     let i = 0;
+    if (name === "") {
+        console.log("Erreur : Vous avez saisi un nom vide.");
+        return;
+    }
+    if (isNaN(idOfTtrip) === true) {
+        console.log("Erreur : Veuillez saisir un nombre valide.");
+        return;
+    }
     while (i < name.length) {
         if (!(name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122 || name.charCodeAt(i) === 32)) {
             console.log("Erreur : Veuillez saisir un nom valide.");
@@ -265,7 +312,7 @@ function BuyTicket() {
 
     let j = 0;
     while (j < trips.length) {
-        if ((trips[j].id == idoftrip)) {
+        if ((trips[j].id == idOfTtrip)) {
             tripExists = true;
             if (trips[j].availableSeats >= 1) {
                 isTruetrip = true;
@@ -289,7 +336,7 @@ function BuyTicket() {
         let seatTaken = false;
         let k = 0;
         while (k < tickets.length) {
-            if (tickets[k].tripId == idoftrip && tickets[k].isCancelled === false && tickets[k].seatNumber == newSeat) {
+            if (tickets[k].tripId == idOfTtrip && tickets[k].isCancelled === false && tickets[k].seatNumber == newSeat) {
                 seatTaken = true;
                 break;
             }
@@ -303,7 +350,7 @@ function BuyTicket() {
 
     const newTicket = {
         id: tickets.length + 1,
-        passengerName: hold_name,
+        passengerName: name,
         tripId: trips[j].id,
         seatNumber: newSeat,
         price: trips[j].price,
@@ -365,6 +412,7 @@ RAILWAY MANAGER
         console.log(``);
         switch (choice) {
             case 0:
+                console.log("Merci de nous faire confiance.")
                 break;
             case 1:
                 ShowTrips();
