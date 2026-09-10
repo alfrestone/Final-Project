@@ -184,6 +184,39 @@ const trips = [
 //Declaring ticket array
 const tickets = [];
 
+//Declaration of SortTrips
+function SortTrips() {
+    let copytrips = [];
+    let i = 0;
+    while (i < trips.length) {
+        copytrips.push(trips[i]);
+        i++;
+    }
+
+    let j = 0;
+    while (j < copytrips.length) {
+        let k = 0;
+        let temp = 0;
+        while (k < copytrips.length - 1) {
+            if (copytrips[k].price > copytrips[k + 1].price) {
+                temp = copytrips[k];
+                copytrips[k] = copytrips[k + 1];
+                copytrips[k + 1] = temp;
+            }
+            k++;
+        }
+        j++;
+    }
+
+    let c = 0;
+    while (c < copytrips.length) {
+        console.log(``);
+        console.log(`${copytrips[c].departure} → ${copytrips[c].destination} : ${copytrips[c].price} DH`);
+        c++;
+    }
+
+}
+
 //Declaration of FilterTrips
 function FilterTrips() {
     city = prompt("Ville de départ : ").trim().toLowerCase();
@@ -458,6 +491,8 @@ RAILWAY MANAGER
             case 7:
                 SortTrips();
                 break;
+            case 8 :
+                ShowStats();
             default:
                 console.log("Option indisponible, veuillez choisir un numéro dans le menu.");
                 break;
