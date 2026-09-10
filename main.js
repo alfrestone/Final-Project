@@ -184,6 +184,59 @@ const trips = [
 //Declaring ticket array
 const tickets = [];
 
+//Declaration of ShowStats
+function ShowStats() {
+    let i = 0;
+    let TotalVal = 0;
+    let count = 0;
+    while (i < tickets.length) {
+        if (tickets[i].isCancelled == false) {
+            TotalVal += tickets[i].price;
+            count++;
+        }
+        i++;
+    }
+
+    console.log(`=========État général=========`);
+    console.log(``);
+    console.log(`Nombre total de tickets: ${count}`);
+    console.log(``);
+
+    if (TotalVal > 0) {
+        console.log(`Chiffre d'affaires total : ${TotalVal} DH`);
+        console.log(``);
+    }
+    else {
+        console.log("Aucune vente n'a été réalisée jusqu'à présent.");
+        console.log(``);
+        return;
+    }
+
+    let j = 0;
+    let bestCount = 0;
+    let bestIndex = 0;
+    while (j < trips.length) {
+        let k = 0;
+        let count = 0;
+        while (k < tickets.length) {
+            if (trips[j].id == tickets[k].tripId && tickets[k].isCancelled === false) {
+                count++;
+            }
+            k++;
+        }
+        if (count > bestCount) {
+            bestCount = count;
+            bestIndex = j;
+        }
+        j++;
+    }
+    console.log(``);
+    console.log(`Trajet le plus vendu : `)
+    console.log(``);
+    console.log(`${trips[bestIndex].departure} → ${trips[bestIndex].destination}`);
+    console.log(``);
+    console.log(`${bestCount} tickets vendus`);
+}
 //Declaration of SortTrips
 function SortTrips() {
     let copytrips = [];
@@ -272,7 +325,7 @@ function LookUpTicket() {
         i++;
     }
 
-    if(isThere === false) {
+    if (isThere === false) {
         console.log("Aucun ticket trouvé pour ce passager.");
         return;
     }
@@ -414,7 +467,9 @@ function BuyTicket() {
     };
     tickets.push(newTicket);
     trips[j].availableSeats--;
+    console.log(``);
     console.log("Ticket acheté avec succès.");
+    console.log(``);
     console.log(`Ticket # ${newTicket.id}`);
     console.log(`Passager : ${newTicket.passengerName}`);
     console.log(`Trajet : ${trips[j].departure} → ${trips[j].destination}`);
@@ -461,6 +516,7 @@ RAILWAY MANAGER
 5. Rechercher un ticket 
 6. Filtrer les trajets 
 7. Trier les trajets 
+8. Statistiques générales
 0. Quitter 
 
             `)
@@ -491,8 +547,9 @@ RAILWAY MANAGER
             case 7:
                 SortTrips();
                 break;
-            case 8 :
+            case 8:
                 ShowStats();
+                break;
             default:
                 console.log("Option indisponible, veuillez choisir un numéro dans le menu.");
                 break;
